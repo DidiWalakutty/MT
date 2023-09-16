@@ -6,7 +6,10 @@
 /*   By: diwalaku <diwalaku@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/16 15:55:54 by diwalaku      #+#    #+#                 */
-/*   Updated: 2023/09/16 15:55:59 by diwalaku      ########   odam.nl         */
+/*   Updated: 2023/09/16 16:34:40 by diwalaku      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "minishell.h"
+
 
