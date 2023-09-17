@@ -1,21 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   utils.c                                            :+:    :+:            */
+/*   ft_strlen.c                                        :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: diwalaku <diwalaku@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2023/09/16 15:55:54 by diwalaku      #+#    #+#                 */
-/*   Updated: 2023/09/17 22:12:39 by diwalaku      ########   odam.nl         */
+/*   Created: 2022/10/04 16:12:06 by diwalaku      #+#    #+#                 */
+/*   Updated: 2023/07/31 12:49:58 by diwalaku      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-void	set_signals(struct sigaction *sa)
+size_t	ft_strlen(const char *s)
 {
-	if (sigaction(SIGUSR1, sa, NULL) < 0)
-		exit_error("Couldn't set up SIGUSR1");
-	if (sigaction(SIGUSR2, sa, NULL) < 0)
-		exit_error("Couldn't set up SIGUSR2");
+	int	i;
+
+	i = 0;
+	if (s == NULL)
+		return (0);
+	while (s[i] != '\0')
+	{
+		i++;
+	}
+	return (i);
 }

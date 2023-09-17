@@ -1,21 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   utils.c                                            :+:    :+:            */
+/*   print_pointer.c                                    :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: diwalaku <diwalaku@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2023/09/16 15:55:54 by diwalaku      #+#    #+#                 */
-/*   Updated: 2023/09/17 22:12:39 by diwalaku      ########   odam.nl         */
+/*   Created: 2022/12/18 17:30:18 by diwalaku      #+#    #+#                 */
+/*   Updated: 2023/07/28 16:13:45 by diwalaku      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-void	set_signals(struct sigaction *sa)
+int	print_pointer(unsigned long ptr)
 {
-	if (sigaction(SIGUSR1, sa, NULL) < 0)
-		exit_error("Couldn't set up SIGUSR1");
-	if (sigaction(SIGUSR2, sa, NULL) < 0)
-		exit_error("Couldn't set up SIGUSR2");
+	int	length;
+
+	length = write(1, "0x", 2);
+	if (ptr == 0)
+		return (length + (write(1, "0", 1)));
+	else
+		length += print_lowerhex(ptr);
+	return (length);
 }

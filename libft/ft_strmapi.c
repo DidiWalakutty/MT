@@ -1,21 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   utils.c                                            :+:    :+:            */
+/*   ft_strmapi.c                                       :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: diwalaku <diwalaku@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2023/09/16 15:55:54 by diwalaku      #+#    #+#                 */
-/*   Updated: 2023/09/17 22:12:39 by diwalaku      ########   odam.nl         */
+/*   Created: 2022/11/16 21:03:56 by diwalaku      #+#    #+#                 */
+/*   Updated: 2022/11/21 18:12:43 by diwalaku      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-void	set_signals(struct sigaction *sa)
+char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 {
-	if (sigaction(SIGUSR1, sa, NULL) < 0)
-		exit_error("Couldn't set up SIGUSR1");
-	if (sigaction(SIGUSR2, sa, NULL) < 0)
-		exit_error("Couldn't set up SIGUSR2");
+	size_t	x;
+	size_t	len;
+	char	*new;
+
+	x = 0;
+	len = ft_strlen(s);
+	new = (char *)malloc(sizeof(char) * (len + 1));
+	if (!s || !f || !new)
+		return (0);
+	while (s[x])
+	{
+		new[x] = f(x, s[x]);
+		x++;
+	}
+	new[x] = '\0';
+	return (new);
 }

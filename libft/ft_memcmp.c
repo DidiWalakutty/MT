@@ -1,21 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   utils.c                                            :+:    :+:            */
+/*   ft_memcmp.c                                        :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: diwalaku <diwalaku@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2023/09/16 15:55:54 by diwalaku      #+#    #+#                 */
-/*   Updated: 2023/09/17 22:12:39 by diwalaku      ########   odam.nl         */
+/*   Created: 2022/11/12 20:03:10 by diwalaku      #+#    #+#                 */
+/*   Updated: 2022/11/12 22:25:12 by diwalaku      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-void	set_signals(struct sigaction *sa)
+int	ft_memcmp(const void *s1, const void *s2, size_t n)
 {
-	if (sigaction(SIGUSR1, sa, NULL) < 0)
-		exit_error("Couldn't set up SIGUSR1");
-	if (sigaction(SIGUSR2, sa, NULL) < 0)
-		exit_error("Couldn't set up SIGUSR2");
+	unsigned char	*str1;
+	unsigned char	*str2;
+	size_t			x;
+
+	str1 = (unsigned char *) s1;
+	str2 = (unsigned char *) s2;
+	x = 0;
+	if (n == 0)
+		return (0);
+	while (x < n)
+	{
+		if (str1[x] != str2[x])
+			return (str1[x] - str2[x]);
+		x++;
+	}
+	return (0);
 }

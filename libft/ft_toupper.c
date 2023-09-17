@@ -1,21 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   utils.c                                            :+:    :+:            */
+/*   ft_toupper.c                                       :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: diwalaku <diwalaku@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2023/09/16 15:55:54 by diwalaku      #+#    #+#                 */
-/*   Updated: 2023/09/17 22:12:39 by diwalaku      ########   odam.nl         */
+/*   Created: 2022/10/04 15:54:47 by diwalaku      #+#    #+#                 */
+/*   Updated: 2022/11/10 15:04:06 by diwalaku      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-void	set_signals(struct sigaction *sa)
+int	ft_toupper(int d)
 {
-	if (sigaction(SIGUSR1, sa, NULL) < 0)
-		exit_error("Couldn't set up SIGUSR1");
-	if (sigaction(SIGUSR2, sa, NULL) < 0)
-		exit_error("Couldn't set up SIGUSR2");
+	if (d >= 97 && d <= 122)
+		return (d -= 32);
+	return (d);
 }

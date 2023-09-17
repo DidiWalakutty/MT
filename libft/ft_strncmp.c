@@ -1,21 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   utils.c                                            :+:    :+:            */
+/*   ft_strncmp.c                                       :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: diwalaku <diwalaku@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2023/09/16 15:55:54 by diwalaku      #+#    #+#                 */
-/*   Updated: 2023/09/17 22:12:39 by diwalaku      ########   odam.nl         */
+/*   Created: 2022/10/07 19:49:22 by diwalaku      #+#    #+#                 */
+/*   Updated: 2022/11/10 15:04:35 by diwalaku      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-void	set_signals(struct sigaction *sa)
+int	ft_strncmp(const char *s1, const char *s2, size_t d)
 {
-	if (sigaction(SIGUSR1, sa, NULL) < 0)
-		exit_error("Couldn't set up SIGUSR1");
-	if (sigaction(SIGUSR2, sa, NULL) < 0)
-		exit_error("Couldn't set up SIGUSR2");
+	unsigned int	x;
+
+	x = 0;
+	if (d == 0)
+	{
+		return (0);
+	}
+	while ((s1[x] == s2[x]) && (x < d - 1) && s1[x])
+	{
+		x++;
+	}
+	return ((unsigned char)(s1[x]) - (unsigned char)(s2[x]));
 }

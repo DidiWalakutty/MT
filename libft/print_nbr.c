@@ -1,21 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   utils.c                                            :+:    :+:            */
+/*   print_nbr.c                                        :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: diwalaku <diwalaku@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2023/09/16 15:55:54 by diwalaku      #+#    #+#                 */
-/*   Updated: 2023/09/17 22:12:39 by diwalaku      ########   odam.nl         */
+/*   Created: 2022/12/16 22:10:17 by diwalaku      #+#    #+#                 */
+/*   Updated: 2023/07/28 16:13:42 by diwalaku      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-void	set_signals(struct sigaction *sa)
+int	print_nbr(int n)
 {
-	if (sigaction(SIGUSR1, sa, NULL) < 0)
-		exit_error("Couldn't set up SIGUSR1");
-	if (sigaction(SIGUSR2, sa, NULL) < 0)
-		exit_error("Couldn't set up SIGUSR2");
+	int				length;
+	unsigned int	nbr;
+
+	length = 0;
+	nbr = 0;
+	if (n < 0)
+	{
+		length += print_char('-');
+		nbr = (unsigned int)(n * -1);
+	}
+	else
+		nbr = (unsigned int) n;
+	if (nbr > 9)
+	{
+		length += print_nbr(nbr / 10);
+		length += print_nbr(nbr % 10);
+	}
+	else
+		length += print_char(nbr + '0');
+	return (length);
 }

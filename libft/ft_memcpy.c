@@ -1,21 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   utils.c                                            :+:    :+:            */
+/*   ft_memcpy.c                                        :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: diwalaku <diwalaku@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2023/09/16 15:55:54 by diwalaku      #+#    #+#                 */
-/*   Updated: 2023/09/17 22:12:39 by diwalaku      ########   odam.nl         */
+/*   Created: 2022/11/10 14:58:07 by diwalaku      #+#    #+#                 */
+/*   Updated: 2022/11/10 19:07:53 by diwalaku      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-void	set_signals(struct sigaction *sa)
+void	*ft_memcpy(void *dst, const void *src, size_t n)
 {
-	if (sigaction(SIGUSR1, sa, NULL) < 0)
-		exit_error("Couldn't set up SIGUSR1");
-	if (sigaction(SIGUSR2, sa, NULL) < 0)
-		exit_error("Couldn't set up SIGUSR2");
+	char	*d;
+	char	*s;
+	size_t	x;
+
+	x = 0;
+	d = (char *)dst;
+	s = (char *)src;
+	if (!dst && !src)
+		return (0);
+	while (x < n)
+	{
+		d[x] = s[x];
+		x++;
+	}
+	return (dst);
 }

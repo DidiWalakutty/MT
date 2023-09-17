@@ -1,21 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   utils.c                                            :+:    :+:            */
+/*   ft_strlcat.c                                       :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: diwalaku <diwalaku@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2023/09/16 15:55:54 by diwalaku      #+#    #+#                 */
-/*   Updated: 2023/09/17 22:12:39 by diwalaku      ########   odam.nl         */
+/*   Created: 2022/11/02 21:32:28 by diwalaku      #+#    #+#                 */
+/*   Updated: 2022/11/12 19:34:52 by diwalaku      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-void	set_signals(struct sigaction *sa)
+size_t	ft_strlcat(char *dst, const char *src, size_t size)
 {
-	if (sigaction(SIGUSR1, sa, NULL) < 0)
-		exit_error("Couldn't set up SIGUSR1");
-	if (sigaction(SIGUSR2, sa, NULL) < 0)
-		exit_error("Couldn't set up SIGUSR2");
+	size_t	len_s;
+	size_t	len_d;
+	size_t	i;
+
+	len_s = ft_strlen(src);
+	len_d = ft_strlen(dst);
+	i = 0;
+	if (size == 0)
+		return (len_s);
+	while (len_d + i < size - 1 && i < len_s)
+	{
+		dst[len_d + i] = src[i];
+		i++;
+	}
+	dst[len_d + i] = '\0';
+	if (len_d < size)
+		return (len_d + len_s);
+	else
+		return (size + len_s);
 }
