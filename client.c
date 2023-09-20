@@ -10,14 +10,43 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "minitalk.h"
 
-void	sig_handler(int user, siginfo_t *info, void *context)
+static void	received_signal(int signal)
 {
-	(void)user;
-	(void)info;
-	(void)context;
+	if (signal == SIGUSR1)
+	{
+		ft_printf("Received signal\n");
+		exit(0);
+	}
 }
+
+// SIGUSR1 = 1
+// SIGUSR2 = 0
+// C &(1 << shift): shift left operator: moves the bits to the left, and discards the far left bit. 
+static void	send_character(char c, int pid)
+{
+	int	check;
+	int	shift;
+
+	shift = 0;
+	while (shift < 8)
+	{
+		// need to rethink how to use operators here!!!
+		// what do I want to compare?
+		if (c & (1 << shift))
+			check = kill(pid, SIGUSR1);
+		else
+			check = kill(pid, SIGUSR2);
+		if (check != 0)
+			exit_error("Failed to send signal");
+		usleep(100);
+		shift++;
+		// signal(SIGUSR1, received_signal); to show it has received a signal?
+	}
+
+}
+
 // Client sends the character to the server.
 // Kill notifies server that a signal was send.
 
@@ -28,20 +57,19 @@ void	sig_handler(int user, siginfo_t *info, void *context)
 // If it's 0 or > 0 a process with the specified PID exists.
 int	main(int argc, char **argv)
 {
-	struct sigaction	server_act;
-	int					byte_i;
-	int					pid;
+	int		byte_i;
+	pid_t	pid;
 
 	if (argc != 3)
 		exit_error("Client: Wrong amount of arguments");
 	else if (kill(ft_atoi(argv[1]), 0) < 0)
 		exit_error("Client: given PID is not valid");
 	pid = ft_atoi(argv[1]);
+	// signal(SIGUSR1, received_signal);
 	byte_i = 0;
-	sigemptyset(&server_act.sa_mask);
-	server_act.sa_flags = SA_SIGINFO | SA_RESTART;
-	server_act.sa_sigaction = sig_handler;
-	set_signals(&server_act);
-	// kill(pid, SIGUSR1);
+	while (argv[2][byte_i])
+		send_character(argv[2][byte_i++], pid);
+	while (1)
+		pause();
 	return (0);
 }
