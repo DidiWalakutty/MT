@@ -10,39 +10,51 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME 	=	minishell
-CC		=	gcc
-GFLAGS	=	-Wall -Werror -Wextra
-#GFLAGS	+=	-fsanitize=address -g
-SRCDIR	= 	src/
-OBJDIR	= 	obj/
+NAME = minitalk
+OBJDIR	= mini_obj
 
-SRC		= 	client.c server.c \
-			utils.c \
+SERVER = server.c
+CLIENT = client.c
 
-SRCOBJ	= $(SRC:%.c=$(OBJDIR)%.o)
+NSERVER = server
+NCLIENT = client
 
-LIBFT	=	./libft
-HEADERS	=	-I minishell.h -I $(LIBFT)/headers
+RM = rm -f
 
-.PHONY	= all libft clean fclean re
+LIBFT = libft/libft.a
 
-all: libft $(NAME)
+CFLAGS = -Wall -Wextra -Werror
 
-$(NAME): $(SRCOBJ)
-	$(MAKE) -C $(LIBFT)
-	$(CC) $(GFLAGS) $(SRCOBJ) $(LIBFT)/libft.a
+headers = libft.h
 
-$(OBJDIR)%.o: $(SRCDIR)%.c
-	@mkdir -p objfiles
-	$(CC) -c $(GFLAGS) -o $@ $<
+OSERVER = $(SERVER:.c=.o)
+OCLIENT = $(CLIENT:.c=.o)
+
+all: $(NSERVER) $(NCLIENT)
+
+$(OBJDIR): 
+	mkdir -p $(OBJDIR)
+
+$(OBJDIR)/%.o : %.c
+	$(CC) -c $(CFLAGS) -o $@ $^
+
+$(NSERVER): $(OBJDIR) $(OSERVER) $(LIBFT)
+	cc $(CFLAGS) $(SERVER) $(LIBFT) -o $(NSERVER)
+
+$(NCLIENT): $(OBJDIR) $(OCLIENT) $(LIBFT)
+	cc $(CFLAGS) $(CLIENT) $(LIBFT) -o $(NCLIENT)
+
+$(LIBFT):
+	make -C libft
 
 clean:
-	$(MAKE) clean -C $(LIBFT)
-	rm -rf obj
+	$(RM) $(OSERVER) $(OCLIENT)
+	make clean -C libft
 
 fclean: clean
-	rm -f minishell
-	$(MAKE) fclean -C $(LIBFT)
+	$(RM) $(NSERVER) $(NCLIENT)
+	make fclean -C libft
 
 re: fclean all
+
+.PHONY: all clean fclean
