@@ -6,7 +6,7 @@
 /*   By: diwalaku <diwalaku@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/16 15:48:12 by diwalaku      #+#    #+#                 */
-/*   Updated: 2023/09/22 20:20:35 by diwalaku      ########   odam.nl         */
+/*   Updated: 2023/09/22 23:31:53 by diwalaku      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,6 @@
 
 int	g_receiver = 0;
 
-// SIGUSR1 = 1
-// SIGUSR2 = 0
-// C &(1 << shift): shift left operator: moves the bits to the left, 
-// and discards the far left bit.
-// usleep: delay without relying on a signal.
 static void	send_character(char c, int pid)
 {
 	int	shift;
@@ -26,16 +21,10 @@ static void	send_character(char c, int pid)
 	shift = 0;
 	while (shift < 8)
 	{
-		if (c & 1 )
-		{
+		if (c & 1)
 			kill(pid, SIGUSR1);
-			g_receiver = SIGUSR1;
-		}
 		else
-		{
 			kill(pid, SIGUSR2);
-			g_receiver = SIGUSR2;
-		}
 		pause();
 		c >>= 1;
 		shift++;
@@ -48,29 +37,23 @@ static void	send_string(char *str, int pid)
 	int	i;
 
 	i = 0;
-	while(str[i])
+	while (str[i])
 	{
 		send_character(str[i++], pid);
 	}
 	send_character('\0', pid);
-	if (g_receiver == 1)
-		kill(pid, SIGUSR1);
-	else
-		kill(pid, SIGUSR2);
+	kill(pid, SIGUSR1);
 }
 
-// Client sends the character to the server.
-// Kill notifies server that a signal was send.
 static void	delivered(int sig)
 {
-
 	if (sig == g_receiver)
 	{
 		g_receiver = 1;
-		ft_printf("signal received\n");
 	}
 	else
 		g_receiver = 0;
+	ft_printf("signal received\n");
 }
 
 int	main(int argc, char **argv)

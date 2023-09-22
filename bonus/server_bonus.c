@@ -6,17 +6,22 @@
 /*   By: diwalaku <diwalaku@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/17 17:37:11 by diwalaku      #+#    #+#                 */
-/*   Updated: 2023/09/22 19:40:38 by diwalaku      ########   odam.nl         */
+/*   Updated: 2023/09/22 23:25:43 by diwalaku      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-void	*print_string(char *message)
+static void	handle_done(char **message, int *done, int user)
 {
-	ft_putstr_fd(message, 1);
-	free(message);
-	return (NULL);
+	if (*done == 1)
+	{
+		if (user == SIGUSR1)
+			*message = print_message(*message);
+		free(*message);
+		*message = NULL;
+		*done = 0;
+	}
 }
 
 char	*first_letter(char c)
@@ -40,7 +45,7 @@ char	*add_to_string(char *str, char c)
 		return (NULL);
 	if (!str)
 		return (first_letter(c));
-	add = (char *)malloc(sizeof(char) * (ft_strlen(str) + 2)); // 256
+	add = (char *)malloc(sizeof(char) * (ft_strlen(str) + 2));
 	if (!add)
 	{
 		free(str);
@@ -55,23 +60,17 @@ char	*add_to_string(char *str, char c)
 	return (add);
 }
 
-// Ignore, catch or default.
-// Siginfo_t structure contains the PID.
-// this info is automatically stored when a signal is received.
-// if bit == 8, it has received all 8 bits and can handle the message.
 void	sig_handler(int user, siginfo_t *info, void *context)
 {
-	pid_t	pid;
 	static int	bit;
 	static char	c;
 	static char	*message;
 	static int	done;
 
 	(void)context;
-	pid = info->si_pid;
 	c |= (user == SIGUSR1) << bit;
 	usleep(100);
-	kill(pid, user);
+	kill(info->si_pid, SIGUSR1);
 	bit++;
 	if (bit == 8)
 	{
@@ -79,27 +78,15 @@ void	sig_handler(int user, siginfo_t *info, void *context)
 			message = add_to_string(message, c);
 		else
 			done = 1;
-		bit = 0;
-		c = 0;
+		reset_stats(&bit, &c);
 	}
 	else if (done == 1)
 	{
-		// andere functie
-		if (user == SIGUSR1)
-			message = print_string(message);
-		free(message);
-		message = NULL;
-		bit = 0;
-		c = 0;
-		done = 0;
+		handle_done(&message, &done, user);
+		reset_stats(&bit, &c);
 	}
 }
 
-// sa_mask: any signals that should be blocked while the
-// sig_handler is being executed.
-// sa_flags: do we get extended information (siginfo) and
-// if signals should be restarted when system call was interrupted.
-// pause: sleeps untill it receives a signal.
 int	main(int argc, char **argv)
 {
 	pid_t				pid;

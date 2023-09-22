@@ -8,7 +8,7 @@ SRCS =	ft_atoi.c ft_isalnum.c ft_isalpha.c ft_isascii.c ft_isdigit.c ft_isprint.
 		ft_putnbr_fd.c ft_split.c ft_strmapi.c ft_striteri.c ft_itoa.c \
 		get_next_line.c get_next_line_utils.c \
 		ft_printf.c print_char.c print_str.c print_nbr.c print_uns_dec.c print_lowerhex.c \
-		print_upperhex.c print_pointer.c exit_error.c \
+		print_upperhex.c print_pointer.c exit_error.c print_message.c reset_stats.c \
 
 
 OBJ = $(SRCS:.c=.o)

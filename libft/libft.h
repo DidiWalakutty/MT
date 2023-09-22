@@ -6,7 +6,7 @@
 /*   By: diwalaku <diwalaku@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/12 18:27:25 by diwalaku      #+#    #+#                 */
-/*   Updated: 2023/09/17 18:51:45 by diwalaku      ########   odam.nl         */
+/*   Updated: 2023/09/22 23:19:31 by diwalaku      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,5 +88,7 @@ int		print_pointer(unsigned long ptr);
 
 // other
 void	exit_error(char *str);
+void	*print_message(char *message);
+void	reset_stats(int *bit, char *c);
 
 #endif

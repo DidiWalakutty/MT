@@ -12,11 +12,16 @@
 
 #include "minitalk.h"
 
-void	*print_string(char *message)
+static void	handle_done(char **message, int *done, int user)
 {
-	ft_putstr_fd(message, 1);
-	free(message);
-	return (NULL);
+	if (*done == 1)
+	{
+		if (user == SIGUSR1)
+			*message = print_message(*message);
+		free(*message);
+		*message = NULL;
+		*done = 0;
+	}
 }
 
 char	*first_letter(char c)
@@ -40,8 +45,7 @@ char	*add_to_string(char *str, char c)
 		return (NULL);
 	if (!str)
 		return (first_letter(c));
-	add = malloc(256 * (sizeof(char)));
-	//(char *)malloc(sizeof(char) * (ft_strlen(str) + 2)); // 256
+	add = (char *)malloc(sizeof(char) * (ft_strlen(str) + 2));
 	if (!add)
 	{
 		free(str);
@@ -58,17 +62,15 @@ char	*add_to_string(char *str, char c)
 
 void	sig_handler(int user, siginfo_t *info, void *context)
 {
-	pid_t	pid;
 	static int	bit;
 	static char	c;
 	static char	*message;
 	static int	done;
 
 	(void)context;
-	pid = info->si_pid;
 	c |= (user == SIGUSR1) << bit;
 	usleep(100);
-	kill(pid, SIGUSR1);
+	kill(info->si_pid, SIGUSR1);
 	bit++;
 	if (bit == 8)
 	{
@@ -76,19 +78,12 @@ void	sig_handler(int user, siginfo_t *info, void *context)
 			message = add_to_string(message, c);
 		else
 			done = 1;
-		bit = 0;
-		c = 0;
+		reset_stats(&bit, &c);
 	}
 	else if (done == 1)
 	{
-		// andere functie
-		if (user == SIGUSR1)
-			message = print_string(message);
-		free(message);
-		message = NULL;
-		bit = 0;
-		c = 0;
-		done = 0;
+		handle_done(&message, &done, user);
+		reset_stats(&bit, &c);
 	}
 }
 

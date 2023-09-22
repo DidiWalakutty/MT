@@ -12,7 +12,7 @@
 
 #include "minitalk.h"
 
-// int	g_receiver = 0;
+int	g_receiver = 0;
 
 static void	send_character(char c, int pid)
 {
@@ -22,15 +22,9 @@ static void	send_character(char c, int pid)
 	while (shift < 8)
 	{
 		if (c & 1)
-		{
 			kill(pid, SIGUSR1);
-			// g_receiver = SIGUSR1;
-		}
 		else
-		{
 			kill(pid, SIGUSR2);
-			// g_receiver = SIGUSR2;
-		}
 		pause();
 		c >>= 1;
 		shift++;
@@ -48,18 +42,15 @@ static void	send_string(char *str, int pid)
 		send_character(str[i++], pid);
 	}
 	send_character('\0', pid);
-	// if (g_receiver == 1)
 	kill(pid, SIGUSR1);
-	// else
-	// 	kill(pid, SIGUSR2);
 }
 
 static void	delivered(int sig)
 {
-	// if (sig == g_receiver)
-	// 	g_receiver = 1;
-	// else
-	// 	g_receiver = 0;
+	if (sig == g_receiver)
+		g_receiver = 1;
+	else
+		g_receiver = 0;
 }
 
 int	main(int argc, char **argv)
