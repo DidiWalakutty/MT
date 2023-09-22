@@ -40,8 +40,8 @@ char	*add_to_string(char *str, char c)
 		return (NULL);
 	if (!str)
 		return (first_letter(c));
-	add = (char *)malloc(sizeof(char) * (ft_strlen(str) * 2 * 2));
-	// add = (char *)malloc(sizeof(char) * (ft_strlen(str) * 2));
+	add = malloc(256 * (sizeof(char)));
+	//(char *)malloc(sizeof(char) * (ft_strlen(str) + 2)); // 256
 	if (!add)
 	{
 		free(str);
@@ -56,45 +56,42 @@ char	*add_to_string(char *str, char c)
 	return (add);
 }
 
-// Ignore, catch or default.
-// Siginfo_t structure contains the PID.
-// this info is automatically stored when a signal is received.
-// if bit == 8, it has received all 8 bits and can handle the message.
 void	sig_handler(int user, siginfo_t *info, void *context)
 {
 	pid_t	pid;
-	static int	bit = 0;
-	static char	c = 0;
-	static char	*message = 0;
+	static int	bit;
+	static char	c;
+	static char	*message;
+	static int	done;
 
 	(void)context;
 	pid = info->si_pid;
-	if (user == SIGUSR1)
-	{
-		c |= 1 << bit;
-		bit++;
-	}
-	if (user == SIGUSR2)
-		bit++;
+	c |= (user == SIGUSR1) << bit;
+	usleep(100);
+	kill(pid, SIGUSR1);
+	bit++;
 	if (bit == 8)
 	{
 		if (c)
 			message = add_to_string(message, c);
 		else
-		{
-			message = print_string(message);
-			kill(pid, SIGUSR1);
-		}
+			done = 1;
 		bit = 0;
 		c = 0;
 	}
+	else if (done == 1)
+	{
+		// andere functie
+		if (user == SIGUSR1)
+			message = print_string(message);
+		free(message);
+		message = NULL;
+		bit = 0;
+		c = 0;
+		done = 0;
+	}
 }
 
-// sa_mask: any signals that should be blocked while the
-// sig_handler is being executed.
-// sa_flags: do we get extended information (siginfo) and
-// if signals should be restarted when system call was interrupted.
-// pause: sleeps untill it receives a signal.
 int	main(int argc, char **argv)
 {
 	pid_t				pid;
