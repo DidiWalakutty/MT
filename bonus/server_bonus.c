@@ -6,7 +6,7 @@
 /*   By: diwalaku <diwalaku@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/17 17:37:11 by diwalaku      #+#    #+#                 */
-/*   Updated: 2023/09/22 23:25:43 by diwalaku      ########   odam.nl         */
+/*   Updated: 2023/09/23 14:55:57 by diwalaku      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ char	*first_letter(char c)
 {
 	char	*first;
 
-	first = (char *)malloc(sizeof(char) * 2);
+	first = (char *)malloc(sizeof(char) * 256);
 	if (!first)
 		return (NULL);
 	first[0] = c;
@@ -69,7 +69,7 @@ void	sig_handler(int user, siginfo_t *info, void *context)
 
 	(void)context;
 	c |= (user == SIGUSR1) << bit;
-	usleep(100);
+	usleep(80);
 	kill(info->si_pid, SIGUSR1);
 	bit++;
 	if (bit == 8)

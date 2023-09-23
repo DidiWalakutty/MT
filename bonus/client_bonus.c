@@ -6,7 +6,7 @@
 /*   By: diwalaku <diwalaku@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/16 15:48:12 by diwalaku      #+#    #+#                 */
-/*   Updated: 2023/09/22 23:31:53 by diwalaku      ########   odam.nl         */
+/*   Updated: 2023/09/23 14:49:48 by diwalaku      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ static void	send_character(char c, int pid)
 		pause();
 		c >>= 1;
 		shift++;
-		usleep(100);
 	}
+	usleep(80);
 }
 
 static void	send_string(char *str, int pid)
@@ -41,6 +41,7 @@ static void	send_string(char *str, int pid)
 	{
 		send_character(str[i++], pid);
 	}
+	send_character('\n', pid);
 	send_character('\0', pid);
 	kill(pid, SIGUSR1);
 }
@@ -48,9 +49,7 @@ static void	send_string(char *str, int pid)
 static void	delivered(int sig)
 {
 	if (sig == g_receiver)
-	{
 		g_receiver = 1;
-	}
 	else
 		g_receiver = 0;
 	ft_printf("signal received\n");

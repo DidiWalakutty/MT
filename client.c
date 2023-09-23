@@ -28,8 +28,8 @@ static void	send_character(char c, int pid)
 		pause();
 		c >>= 1;
 		shift++;
-		usleep(100);
 	}
+	usleep(80);
 }
 
 static void	send_string(char *str, int pid)
@@ -41,6 +41,7 @@ static void	send_string(char *str, int pid)
 	{
 		send_character(str[i++], pid);
 	}
+	send_character('\n', pid);
 	send_character('\0', pid);
 	kill(pid, SIGUSR1);
 }
