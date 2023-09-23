@@ -6,7 +6,7 @@
 /*   By: diwalaku <diwalaku@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/22 22:20:49 by diwalaku      #+#    #+#                 */
-/*   Updated: 2023/09/22 23:23:03 by diwalaku      ########   odam.nl         */
+/*   Updated: 2023/09/23 19:38:08 by diwalaku      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	*print_message(char *message)
 {
-	ft_putstr_fd(message, 1);
+	ft_printf("%s\n", message);
 	free(message);
 	return (NULL);
 }

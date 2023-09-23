@@ -41,7 +41,6 @@ static void	send_string(char *str, int pid)
 	{
 		send_character(str[i++], pid);
 	}
-	send_character('\n', pid);
 	send_character('\0', pid);
 	kill(pid, SIGUSR1);
 }

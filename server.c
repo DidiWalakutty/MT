@@ -96,7 +96,7 @@ int	main(int argc, char **argv)
 	if (argc == 1)
 	{
 		pid = getpid();
-		printf("Server PID: %d\n", pid);
+		ft_printf("Server PID: %d\n", pid);
 		sigemptyset(&server_act.sa_mask);
 		server_act.sa_sigaction = sig_handler;
 		server_act.sa_flags = SA_SIGINFO;
