@@ -6,7 +6,7 @@
 /*   By: diwalaku <diwalaku@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/16 15:48:12 by diwalaku      #+#    #+#                 */
-/*   Updated: 2023/09/23 14:49:48 by diwalaku      ########   odam.nl         */
+/*   Updated: 2023/09/23 18:45:01 by diwalaku      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static void	send_character(char c, int pid)
 		c >>= 1;
 		shift++;
 	}
-	usleep(80);
+	usleep(200);
 }
 
 static void	send_string(char *str, int pid)

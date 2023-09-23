@@ -29,7 +29,7 @@ static void	send_character(char c, int pid)
 		c >>= 1;
 		shift++;
 	}
-	usleep(80);
+	usleep(200);
 }
 
 static void	send_string(char *str, int pid)

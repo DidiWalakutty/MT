@@ -6,7 +6,7 @@
 /*   By: diwalaku <diwalaku@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/17 17:37:11 by diwalaku      #+#    #+#                 */
-/*   Updated: 2023/09/23 14:55:57 by diwalaku      ########   odam.nl         */
+/*   Updated: 2023/09/23 18:42:14 by diwalaku      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	sig_handler(int user, siginfo_t *info, void *context)
 
 	(void)context;
 	c |= (user == SIGUSR1) << bit;
-	usleep(80);
+	usleep(200);
 	kill(info->si_pid, SIGUSR1);
 	bit++;
 	if (bit == 8)

@@ -69,7 +69,7 @@ void	sig_handler(int user, siginfo_t *info, void *context)
 
 	(void)context;
 	c |= (user == SIGUSR1) << bit;
-	usleep(80);
+	usleep(200);
 	kill(info->si_pid, SIGUSR1);
 	bit++;
 	if (bit == 8)
