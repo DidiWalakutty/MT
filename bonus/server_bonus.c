@@ -6,7 +6,7 @@
 /*   By: diwalaku <diwalaku@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/17 17:37:11 by diwalaku      #+#    #+#                 */
-/*   Updated: 2023/09/23 19:11:26 by diwalaku      ########   odam.nl         */
+/*   Updated: 2023/09/27 20:41:23 by diwalaku      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ char	*add_to_string(char *str, char c)
 	return (add);
 }
 
+// kill() for sending send_char in client
+// confirmation on receiving the signal.
 void	sig_handler(int user, siginfo_t *info, void *context)
 {
 	static int	bit;

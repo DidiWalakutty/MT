@@ -6,7 +6,7 @@
 /*   By: diwalaku <diwalaku@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/16 15:48:12 by diwalaku      #+#    #+#                 */
-/*   Updated: 2023/09/23 19:38:33 by diwalaku      ########   odam.nl         */
+/*   Updated: 2023/09/27 20:32:58 by diwalaku      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ static void	send_string(char *str, int pid)
 	kill(pid, SIGUSR1);
 }
 
+// Printing every signal that's received is
+// probably overkill for the bonus.
 static void	delivered(int sig)
 {
 	if (sig == g_receiver)
@@ -56,15 +58,13 @@ static void	delivered(int sig)
 
 int	main(int argc, char **argv)
 {
-	int		byte_i;
 	pid_t	pid;
 
+	pid = ft_atoi(argv[1]);
 	if (argc != 3)
 		exit_error("Client: Wrong amount of arguments");
-	else if (kill(ft_atoi(argv[1]), 0) < 0)
+	else if (kill(pid, 0) < 0)
 		exit_error("Client: given PID is not valid");
-	pid = ft_atoi(argv[1]);
-	byte_i = 0;
 	signal(SIGUSR1, delivered);
 	signal(SIGUSR2, delivered);
 	send_string(argv[2], pid);

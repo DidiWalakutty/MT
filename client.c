@@ -14,6 +14,9 @@
 
 int	g_receiver = 0;
 
+// pause() so sig_handler() can send a 
+// kill() confirmation on receiving
+// the signal. usleep() so both can catch up.
 static void	send_character(char c, int pid)
 {
 	int	shift;
@@ -32,6 +35,10 @@ static void	send_character(char c, int pid)
 	usleep(200);
 }
 
+// Send every char seperately.
+// Lastly, send '\0' so server knows it's the
+// end of the string. kill() so handle_done
+// knows it can print the message.
 static void	send_string(char *str, int pid)
 {
 	int	i;
@@ -53,17 +60,19 @@ static void	delivered(int sig)
 		g_receiver = 0;
 }
 
+// Check if given PID is the same
+// as the one running on ./server.
+// Set signal registration 'delivered' to
+// make sure every signal is received.
 int	main(int argc, char **argv)
 {
-	int		byte_i;
 	pid_t	pid;
 
+	pid = ft_atoi(argv[1]);
 	if (argc != 3)
 		exit_error("Client: Wrong amount of arguments");
-	else if (kill(ft_atoi(argv[1]), 0) < 0)
+	else if (kill(pid, 0) < 0)
 		exit_error("Client: given PID is not valid");
-	pid = ft_atoi(argv[1]);
-	byte_i = 0;
 	signal(SIGUSR1, delivered);
 	signal(SIGUSR2, delivered);
 	send_string(argv[2], pid);

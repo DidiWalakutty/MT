@@ -60,6 +60,11 @@ char	*add_to_string(char *str, char c)
 	return (add);
 }
 
+// Shortened the bitshifting in one line
+// to set c to either 1 or 0.
+// usleep(200) to catch up and send
+// a kill() to let send_character in client
+// know that the signal was received.
 void	sig_handler(int user, siginfo_t *info, void *context)
 {
 	static int	bit;
@@ -96,7 +101,7 @@ int	main(int argc, char **argv)
 	if (argc == 1)
 	{
 		pid = getpid();
-		ft_printf("Server PID: %d\n", pid);
+		printf("Server PID: %d\n", pid);
 		sigemptyset(&server_act.sa_mask);
 		server_act.sa_sigaction = sig_handler;
 		server_act.sa_flags = SA_SIGINFO;
